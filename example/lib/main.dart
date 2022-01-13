@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: const Center(
-          child: Text('Implement me'),
+          child: Text('Implement the sample'),
         ),
       ),
     );

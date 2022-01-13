@@ -1,10 +1,11 @@
 name: giphy_sdk
 description: A flutter package that let's you communicate with the giphy sdk
 version: 0.0.1
-homepage:
+homepage: https://github.com/brim-borium/giphy_sdk
+issue_tracker: https://github.com/brim-borium/giphy_sdk/issues
 
 environment:
-  sdk: ">=2.16.0-80.1.beta <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=2.5.0"
 
 dependencies:
