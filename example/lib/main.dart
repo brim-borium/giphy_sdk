@@ -19,7 +19,8 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            GiphySdk.connectToGiphy(apiKey: "Yy07HnfovRAbW0jpROqjGtKK2FczRa8l");
+            GiphySdk.openGiphySelection(
+                apiKey: "Yy07HnfovRAbW0jpROqjGtKK2FczRa8l");
           },
           child: const Icon(Icons.connect_without_contact),
         ),

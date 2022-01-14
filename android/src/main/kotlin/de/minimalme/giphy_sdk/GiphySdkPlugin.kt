@@ -10,6 +10,7 @@ import com.giphy.sdk.ui.GPHContentType
 import com.giphy.sdk.ui.GPHSettings
 import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.views.GiphyDialogFragment
+import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -46,16 +47,17 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   private val errorConnecting = "errorConnecting"
 
   /// giphy setup
-
   private val giphySettings = GPHSettings(
     GridType.waterfall,
     selectedContentType = GPHContentType.gif,
     enableDynamicText = true )
 
+  private var pendingOperation: PendingOperation? = null
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "giphy_sdk")
     channel.setMethodCallHandler(this)
+
     onAttachedToEngine(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
   }
 
@@ -94,16 +96,21 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       result.error(errorConnecting, "apiKey is not set or has invalid format", "ApiKey provided: $apiKey")
     } else {
       val dialog = GiphyDialogFragment.newInstance(giphySettings, apiKey)
-      dialog.gifSelectionListener = getGifSelectionListener()
+      dialog.gifSelectionListener = getGifSelectionListener(result)
       val supportFragmentManager = (applicationActivity as FragmentActivity).supportFragmentManager
+      methodConnectToGiphy.checkAndSetPendingOperation(result)
       dialog.show(supportFragmentManager, "giphy_sdk")
-      return result.success(true)
     }
   }
 
-  private fun getGifSelectionListener() = object : GiphyDialogFragment.GifSelectionListener {
+  private fun getGifSelectionListener(result: Result) = object : GiphyDialogFragment.GifSelectionListener {
+
     override fun onGifSelected(media: Media, searchTerm: String?, selectedContentType: GPHContentType) {
-      Log.i(loggingTag,"onGifSelected\nmedia: $media, searchTerm:$searchTerm, selectedContentType: $selectedContentType")
+      Log.i(
+        loggingTag,
+        "onGifSelected\nmedia: ${media.contentUrl}, searchTerm:$searchTerm, selectedContentType: $selectedContentType"
+      )
+      result.success(Gson().toJson(media))
     }
 
     override fun onDismissed(selectedContentType: GPHContentType) {
@@ -115,8 +122,20 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
   }
 
+  private fun String.checkAndSetPendingOperation(result: Result) {
+
+    check(pendingOperation == null)
+    {
+      "Concurrent operations detected: " + pendingOperation?.method.toString() + ", " + this
+    }
+    pendingOperation = PendingOperation(this, result)
+  }
+
   private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
 
     this.applicationContext = applicationContext
   }
 }
+
+private class PendingOperation internal constructor(val method: String, val result: Result)
+

@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await GiphySdk.connectToGiphy(apiKey: ""), true);
+    expect(await GiphySdk.openGiphySelection(apiKey: ""), true);
   });
 }

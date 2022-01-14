@@ -24,11 +24,19 @@ class GiphySdk {
     ),
   );
 
-  static Future<bool> connectToGiphy({required String apiKey}) async {
+  /// Opens the Giphy Selection and returns a [bool] if everything worked
+  ///
+  /// Required parameters are the [apiKey] to
+  /// authenticate with the Giphy Api
+  /// Throws a [PlatformException] if connecting to the remote api failed
+  /// Throws a [MissingPluginException] if the method is not implemented on
+  /// the native platforms.
+  static Future<bool> openGiphySelection({required String apiKey}) async {
     try {
-      return await _channel.invokeMethod(methodConnectToGiphy, {
+      var result = await _channel.invokeMethod(methodConnectToGiphy, {
         paramApiKey: apiKey,
       });
+      return result;
     } on Exception catch (e) {
       _logException(methodConnectToGiphy, e);
       rethrow;
