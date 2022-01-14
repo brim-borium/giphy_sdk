@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giphy_sdk/giphy_sdk.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +17,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            GiphySdk.connectToGiphy(apiKey: "Yy07HnfovRAbW0jpROqjGtKK2FczRa8l");
+          },
+          child: const Icon(Icons.connect_without_contact),
+        ),
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
