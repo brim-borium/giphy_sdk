@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentManager
+import com.giphy.sdk.ui.GPHContentType
+import com.giphy.sdk.ui.GPHSettings
 import com.giphy.sdk.ui.Giphy
+import com.giphy.sdk.ui.themes.GPHTheme
+import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import io.flutter.embedding.android.FlutterFragmentActivity
 
@@ -50,6 +54,7 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    applicationContext = null
     channel.setMethodCallHandler(null)
   }
 
@@ -82,8 +87,9 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     if (apiKey.isNullOrBlank()) {
       result.error(errorConnecting, "apiKey is not set or has invalid format", "ApiKey provided: $apiKey")
     } else {
-      Giphy.configure(applicationContext!!, apiKey)
-      GiphyDialogFragment.newInstance().show(FlutterFragmentActivity().supportFragmentManager, "giphy_dialog")
+      val settings = GPHSettings(GridType.waterfall, GPHTheme.Dark)
+      val dialog = GiphyDialogFragment.newInstance(settings.copy(selectedContentType = GPHContentType.gif ), apiKey)
+      dialog.show(FlutterFragmentActivity().supportFragmentManager, "giphy_sdk")
       return result.success(true);
     }
   }
