@@ -5,19 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
 import 'models/giphy_media.dart';
+import 'platform_channels.dart';
 
+///
+/// [GiphySdk] holds the functionality to connect and use the GiphySdk
+///
 class GiphySdk {
+  // mehtod channels
   static const MethodChannel _channel = MethodChannel('giphy_sdk');
 
-  //methods
-  static const String methodConnectToGiphy = "connectToGiphy";
-
-  // parameters
-  static const String paramApiKey = "apiKey";
-
-  //logging
+  // logging
   static final Logger _logger = Logger(
-    //filter: CustomLogFilter(), // custom logfilter can be used to have logs in release mode
     printer: PrettyPrinter(
       methodCount: 2,
       errorMethodCount: 8,
@@ -37,9 +35,12 @@ class GiphySdk {
   static Future<GiphyMedia?> openGiphySelection(
       {required String apiKey}) async {
     try {
-      var giphyMediaJson = await _channel.invokeMethod(methodConnectToGiphy, {
-        paramApiKey: apiKey,
-      });
+      var giphyMediaJson = await _channel.invokeMethod(
+        MethodNames.openGiphySelection,
+        {
+          ParameterNames.apiKey: apiKey,
+        },
+      );
 
       if (giphyMediaJson == null) {
         return null;
@@ -48,7 +49,7 @@ class GiphySdk {
       var giphyMedia = GiphyMedia.fromJson(giphyMediaMap);
       return giphyMedia;
     } on Exception catch (e) {
-      _logException(methodConnectToGiphy, e);
+      _logException(MethodNames.openGiphySelection, e);
       rethrow;
     }
   }

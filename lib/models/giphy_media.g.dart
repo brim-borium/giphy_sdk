@@ -34,7 +34,9 @@ GiphyMedia _$GiphyMediaFromJson(Map<String, dynamic> json) => GiphyMedia(
       json['trending_datetime'] as String,
       json['type'] as String,
       json['url'] as String,
-      User.fromJson(json['user'] as Map<String, dynamic>),
+      json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
       UserDictionary.fromJson(json['userDictionary'] as Map<String, dynamic>),
     );
 

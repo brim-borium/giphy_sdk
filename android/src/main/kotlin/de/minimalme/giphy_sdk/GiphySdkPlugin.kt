@@ -38,7 +38,7 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   private val loggingTag = "giphy_sdk"
 
   /// connecting
-  private val methodConnectToGiphy = "connectToGiphy"
+  private val methodOpenGiphySelection = "openGiphySelection"
 
   /// parameters
   private val paramApiKey = "apiKey"
@@ -51,8 +51,6 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     GridType.waterfall,
     selectedContentType = GPHContentType.gif,
     enableDynamicText = true )
-
-  private var pendingOperation: PendingOperation? = null
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "giphy_sdk")
@@ -84,21 +82,20 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
-      methodConnectToGiphy -> connectToGiphy(call.argument(paramApiKey), result)
+      methodOpenGiphySelection -> openGiphySelection(call.argument(paramApiKey), result)
       else -> {
         result.notImplemented()
       }
     }
   }
 
-  private fun connectToGiphy(apiKey: String?, result: Result) {
+  private fun openGiphySelection(apiKey: String?, result: Result) {
     if (apiKey.isNullOrBlank()) {
       result.error(errorConnecting, "apiKey is not set or has invalid format", "ApiKey provided: $apiKey")
     } else {
       val dialog = GiphyDialogFragment.newInstance(giphySettings, apiKey)
       dialog.gifSelectionListener = getGifSelectionListener(result)
       val supportFragmentManager = (applicationActivity as FragmentActivity).supportFragmentManager
-      methodConnectToGiphy.checkAndSetPendingOperation(result)
       dialog.show(supportFragmentManager, "giphy_sdk")
     }
   }
@@ -122,20 +119,9 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
   }
 
-  private fun String.checkAndSetPendingOperation(result: Result) {
-
-    check(pendingOperation == null)
-    {
-      "Concurrent operations detected: " + pendingOperation?.method.toString() + ", " + this
-    }
-    pendingOperation = PendingOperation(this, result)
-  }
-
   private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
 
     this.applicationContext = applicationContext
   }
 }
-
-private class PendingOperation internal constructor(val method: String, val result: Result)
 

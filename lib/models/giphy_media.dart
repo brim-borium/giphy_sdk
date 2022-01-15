@@ -63,7 +63,7 @@ class GiphyMedia {
   @JsonKey(name: 'url')
   String url;
   @JsonKey(name: 'user')
-  User user;
+  User? user;
   @JsonKey(name: 'userDictionary')
   UserDictionary userDictionary;
 
