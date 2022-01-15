@@ -18,7 +18,7 @@ class Downsized {
   int mp4Size;
   @JsonKey(name: 'renditionType')
   String renditionType;
-  @JsonKey(name: 'webpSize')
+  @JsonKey(name: 'webp_size')
   int webpSize;
   @JsonKey(name: 'width')
   int width;

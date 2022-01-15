@@ -16,16 +16,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late GiphyMedia? _giphyMedia;
+  GiphyMedia? _giphyMedia;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             var apiKey = dotenv.env['API_KEY'];
-            setState(() async {
-              _giphyMedia = await GiphySdk.openGiphySelection(apiKey: apiKey!);
+            var media = await GiphySdk.openGiphySelection(apiKey: apiKey!);
+            setState(() {
+              _giphyMedia = media;
             });
           },
           child: const Icon(Icons.connect_without_contact),

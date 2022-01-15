@@ -14,7 +14,7 @@ Downsized _$DownsizedFromJson(Map<String, dynamic> json) => Downsized(
       json['mediaId'] as String,
       json['mp4_size'] as int,
       json['renditionType'] as String,
-      json['webpSize'] as int,
+      json['webp_size'] as int,
       json['width'] as int,
     );
 
@@ -26,6 +26,6 @@ Map<String, dynamic> _$DownsizedToJson(Downsized instance) => <String, dynamic>{
       'mediaId': instance.mediaId,
       'mp4_size': instance.mp4Size,
       'renditionType': instance.renditionType,
-      'webpSize': instance.webpSize,
+      'webp_size': instance.webpSize,
       'width': instance.width,
     };
