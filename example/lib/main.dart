@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:giphy_sdk/giphy_sdk.dart';
+import 'package:giphy_sdk/models/giphy_media.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -15,12 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+  late GiphyMedia? _giphyMedia;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,17 +24,33 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             var apiKey = dotenv.env['API_KEY'];
-            GiphySdk.openGiphySelection(apiKey: apiKey!);
+            setState(() async {
+              _giphyMedia = await GiphySdk.openGiphySelection(apiKey: apiKey!);
+            });
           },
           child: const Icon(Icons.connect_without_contact),
         ),
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: const Center(
-          child: Text('Implement the sample'),
-        ),
+        body: _buildBody(),
       ),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_giphyMedia == null) {
+      return const Center(
+        child: Text("No gif selected"),
+      );
+    }
+
+    return Column(
+      children: [
+        Text("Selected gif id: ${_giphyMedia?.id}"),
+        Text("Selected gif title: ${_giphyMedia?.title}"),
+        Text("Selected bitly url : ${_giphyMedia?.bitlyGifUrl}"),
+      ],
     );
   }
 }
