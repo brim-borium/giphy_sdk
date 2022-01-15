@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
           child: const Icon(Icons.connect_without_contact),
         ),
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Giphy SDK Example app'),
         ),
         body: _buildBody(),
       ),
