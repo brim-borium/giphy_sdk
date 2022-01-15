@@ -13,7 +13,7 @@ FixedHeight _$FixedHeightFromJson(Map<String, dynamic> json) => FixedHeight(
       json['height'] as int,
       json['mediaId'] as String,
       json['mp4_size'] as int,
-      json['mp4'] as String,
+      json['mp4'] as String?,
       json['renditionType'] as String,
       json['webp_size'] as int,
       json['webp'] as String,

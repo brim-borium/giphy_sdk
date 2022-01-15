@@ -10,27 +10,27 @@ Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
       Downsized.fromJson(json['downsized'] as Map<String, dynamic>),
       Downsized.fromJson(json['downsized_large'] as Map<String, dynamic>),
       Downsized.fromJson(json['downsized_medium'] as Map<String, dynamic>),
-      DownsizedSmall.fromJson(json['downsized_small'] as Map<String, dynamic>),
+      Downsized.fromJson(json['downsized_small'] as Map<String, dynamic>),
       Downsized.fromJson(json['downsized_still'] as Map<String, dynamic>),
       FixedHeight.fromJson(json['fixed_height'] as Map<String, dynamic>),
-      FixedHeightDownsampled.fromJson(
+      FixedHeight.fromJson(
           json['fixed_height_downsampled'] as Map<String, dynamic>),
       FixedHeight.fromJson(json['fixed_height_small'] as Map<String, dynamic>),
       Downsized.fromJson(
           json['fixed_height_small_still'] as Map<String, dynamic>),
       Downsized.fromJson(json['fixed_height_still'] as Map<String, dynamic>),
       FixedHeight.fromJson(json['fixed_width'] as Map<String, dynamic>),
-      FixedHeightDownsampled.fromJson(
+      FixedHeight.fromJson(
           json['fixed_width_downsampled'] as Map<String, dynamic>),
       FixedHeight.fromJson(json['fixed_width_small'] as Map<String, dynamic>),
       Downsized.fromJson(
           json['fixed_width_small_still'] as Map<String, dynamic>),
       Downsized.fromJson(json['fixed_width_still'] as Map<String, dynamic>),
-      DownsizedSmall.fromJson(json['looping'] as Map<String, dynamic>),
+      Downsized.fromJson(json['looping'] as Map<String, dynamic>),
       json['mediaId'] as String,
       FixedHeight.fromJson(json['original'] as Map<String, dynamic>),
       Downsized.fromJson(json['original_still'] as Map<String, dynamic>),
-      DownsizedSmall.fromJson(json['preview'] as Map<String, dynamic>),
+      Downsized.fromJson(json['preview'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ImagesToJson(Images instance) => <String, dynamic>{

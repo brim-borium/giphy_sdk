@@ -17,7 +17,7 @@ class FixedHeight {
   @JsonKey(name: 'mp4_size')
   int mp4Size;
   @JsonKey(name: 'mp4')
-  String mp4;
+  String? mp4;
   @JsonKey(name: 'renditionType')
   String renditionType;
   @JsonKey(name: 'webp_size')

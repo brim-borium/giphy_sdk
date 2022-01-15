@@ -1,9 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'downsized.dart';
-import 'downsized_small.dart';
 import 'fixed_height.dart';
-import 'fixed_height_downsampled.dart';
 
 part 'images.g.dart';
 
@@ -16,13 +14,13 @@ class Images {
   @JsonKey(name: 'downsized_medium')
   Downsized downsizedMedium;
   @JsonKey(name: 'downsized_small')
-  DownsizedSmall downsizedSmall;
+  Downsized downsizedSmall;
   @JsonKey(name: 'downsized_still')
   Downsized downsizedStill;
   @JsonKey(name: 'fixed_height')
   FixedHeight fixedHeight;
   @JsonKey(name: 'fixed_height_downsampled')
-  FixedHeightDownsampled fixedHeightDownsampled;
+  FixedHeight fixedHeightDownsampled;
   @JsonKey(name: 'fixed_height_small')
   FixedHeight fixedHeightSmall;
   @JsonKey(name: 'fixed_height_small_still')
@@ -32,7 +30,7 @@ class Images {
   @JsonKey(name: 'fixed_width')
   FixedHeight fixedWidth;
   @JsonKey(name: 'fixed_width_downsampled')
-  FixedHeightDownsampled fixedWidthDownsampled;
+  FixedHeight fixedWidthDownsampled;
   @JsonKey(name: 'fixed_width_small')
   FixedHeight fixedWidthSmall;
   @JsonKey(name: 'fixed_width_small_still')
@@ -40,7 +38,7 @@ class Images {
   @JsonKey(name: 'fixed_width_still')
   Downsized fixedWidthStill;
   @JsonKey(name: 'looping')
-  DownsizedSmall looping;
+  Downsized looping;
   @JsonKey(name: 'mediaId')
   String mediaId;
   @JsonKey(name: 'original')
@@ -48,7 +46,7 @@ class Images {
   @JsonKey(name: 'original_still')
   Downsized originalStill;
   @JsonKey(name: 'preview')
-  DownsizedSmall preview;
+  Downsized preview;
 
   Images(
     this.downsized,

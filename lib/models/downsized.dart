@@ -9,13 +9,15 @@ class Downsized {
   @JsonKey(name: 'size')
   int size;
   @JsonKey(name: 'url')
-  String url;
+  String? url;
   @JsonKey(name: 'height')
   int height;
   @JsonKey(name: 'mediaId')
   String mediaId;
   @JsonKey(name: 'mp4_size')
   int mp4Size;
+  @JsonKey(name: 'mp4')
+  String? mp4;
   @JsonKey(name: 'renditionType')
   String renditionType;
   @JsonKey(name: 'webp_size')
@@ -30,6 +32,7 @@ class Downsized {
     this.height,
     this.mediaId,
     this.mp4Size,
+    this.mp4,
     this.renditionType,
     this.webpSize,
     this.width,
