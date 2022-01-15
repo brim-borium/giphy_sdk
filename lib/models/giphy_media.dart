@@ -10,14 +10,16 @@ part 'giphy_media.g.dart';
 class GiphyMedia {
   @JsonKey(name: 'analytics_response_payload')
   String analyticsResponsePayload;
+  @JsonKey(name: 'animated_text_style')
+  String? animatedTextStyle;
   @JsonKey(name: 'bitly_gif_url')
-  String bitlyGifUrl;
+  String? bitlyGifUrl;
   @JsonKey(name: 'bitly_url')
-  String bitlyUrl;
+  String? bitlyUrl;
   @JsonKey(name: 'content_url')
-  String contentUrl;
+  String? contentUrl;
   @JsonKey(name: 'embed_url')
-  String embedUrl;
+  String? embedUrl;
   @JsonKey(name: 'has_attribution')
   bool hasAttribution;
   @JsonKey(name: 'id')
@@ -25,7 +27,7 @@ class GiphyMedia {
   @JsonKey(name: 'images')
   Images images;
   @JsonKey(name: 'import_datetime')
-  String importDatetime;
+  String? importDatetime;
   @JsonKey(name: 'is_anonymous')
   bool isAnonymous;
   @JsonKey(name: 'is_community')
@@ -45,19 +47,19 @@ class GiphyMedia {
   @JsonKey(name: 'is_sticker')
   bool isSticker;
   @JsonKey(name: 'rating')
-  String rating;
+  String? rating;
   @JsonKey(name: 'slug')
-  String slug;
+  String? slug;
   @JsonKey(name: 'source')
-  String source;
+  String? source;
   @JsonKey(name: 'source_post_url')
-  String sourcePostUrl;
+  String? sourcePostUrl;
   @JsonKey(name: 'source_tld')
-  String sourceTld;
+  String? sourceTld;
   @JsonKey(name: 'title')
   String title;
   @JsonKey(name: 'trending_datetime')
-  String trendingDatetime;
+  String? trendingDatetime;
   @JsonKey(name: 'type')
   String type;
   @JsonKey(name: 'url')

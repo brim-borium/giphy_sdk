@@ -1,52 +1,51 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'downsized.dart';
-import 'fixed_height.dart';
+import 'image_attributes.dart';
 
 part 'images.g.dart';
 
 @JsonSerializable()
 class Images {
   @JsonKey(name: 'downsized')
-  Downsized downsized;
+  ImageAttributes? downsized;
   @JsonKey(name: 'downsized_large')
-  Downsized downsizedLarge;
+  ImageAttributes? downsizedLarge;
   @JsonKey(name: 'downsized_medium')
-  Downsized downsizedMedium;
+  ImageAttributes? downsizedMedium;
   @JsonKey(name: 'downsized_small')
-  Downsized downsizedSmall;
+  ImageAttributes? downsizedSmall;
   @JsonKey(name: 'downsized_still')
-  Downsized downsizedStill;
+  ImageAttributes? downsizedStill;
   @JsonKey(name: 'fixed_height')
-  FixedHeight fixedHeight;
+  ImageAttributes? fixedHeight;
   @JsonKey(name: 'fixed_height_downsampled')
-  FixedHeight fixedHeightDownsampled;
+  ImageAttributes? fixedHeightDownsampled;
   @JsonKey(name: 'fixed_height_small')
-  FixedHeight fixedHeightSmall;
+  ImageAttributes? fixedHeightSmall;
   @JsonKey(name: 'fixed_height_small_still')
-  Downsized fixedHeightSmallStill;
+  ImageAttributes? fixedHeightSmallStill;
   @JsonKey(name: 'fixed_height_still')
-  Downsized fixedHeightStill;
+  ImageAttributes? fixedHeightStill;
   @JsonKey(name: 'fixed_width')
-  FixedHeight fixedWidth;
+  ImageAttributes fixedWidth;
   @JsonKey(name: 'fixed_width_downsampled')
-  FixedHeight fixedWidthDownsampled;
+  ImageAttributes fixedWidthDownsampled;
   @JsonKey(name: 'fixed_width_small')
-  FixedHeight fixedWidthSmall;
+  ImageAttributes fixedWidthSmall;
   @JsonKey(name: 'fixed_width_small_still')
-  Downsized fixedWidthSmallStill;
+  ImageAttributes? fixedWidthSmallStill;
   @JsonKey(name: 'fixed_width_still')
-  Downsized fixedWidthStill;
+  ImageAttributes? fixedWidthStill;
   @JsonKey(name: 'looping')
-  Downsized looping;
+  ImageAttributes? looping;
   @JsonKey(name: 'mediaId')
   String mediaId;
   @JsonKey(name: 'original')
-  FixedHeight original;
+  ImageAttributes original;
   @JsonKey(name: 'original_still')
-  Downsized originalStill;
+  ImageAttributes? originalStill;
   @JsonKey(name: 'preview')
-  Downsized preview;
+  ImageAttributes? preview;
 
   Images(
     this.downsized,

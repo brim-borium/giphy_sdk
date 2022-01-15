@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'downsized.g.dart';
+part 'image_attributes.g.dart';
 
 @JsonSerializable()
-class Downsized {
+class ImageAttributes {
   @JsonKey(name: 'frames')
   int frames;
   @JsonKey(name: 'size')
@@ -22,10 +22,12 @@ class Downsized {
   String renditionType;
   @JsonKey(name: 'webp_size')
   int webpSize;
+  @JsonKey(name: 'webp')
+  String? webp;
   @JsonKey(name: 'width')
   int width;
 
-  Downsized(
+  ImageAttributes(
     this.frames,
     this.size,
     this.url,
@@ -35,11 +37,12 @@ class Downsized {
     this.mp4,
     this.renditionType,
     this.webpSize,
+    this.webp,
     this.width,
   );
 
-  factory Downsized.fromJson(Map<String, dynamic> json) =>
-      _$DownsizedFromJson(json);
+  factory ImageAttributes.fromJson(Map<String, dynamic> json) =>
+      _$ImageAttributesFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DownsizedToJson(this);
+  Map<String, dynamic> toJson() => _$ImageAttributesToJson(this);
 }

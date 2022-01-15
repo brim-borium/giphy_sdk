@@ -8,14 +8,14 @@ part of 'giphy_media.dart';
 
 GiphyMedia _$GiphyMediaFromJson(Map<String, dynamic> json) => GiphyMedia(
       json['analytics_response_payload'] as String,
-      json['bitly_gif_url'] as String,
-      json['bitly_url'] as String,
-      json['content_url'] as String,
-      json['embed_url'] as String,
+      json['bitly_gif_url'] as String?,
+      json['bitly_url'] as String?,
+      json['content_url'] as String?,
+      json['embed_url'] as String?,
       json['has_attribution'] as bool,
       json['id'] as String,
       Images.fromJson(json['images'] as Map<String, dynamic>),
-      json['import_datetime'] as String,
+      json['import_datetime'] as String?,
       json['is_anonymous'] as bool,
       json['is_community'] as bool,
       json['is_dynamic'] as bool,
@@ -25,24 +25,25 @@ GiphyMedia _$GiphyMediaFromJson(Map<String, dynamic> json) => GiphyMedia(
       json['is_realtime'] as bool,
       json['is_removed'] as bool,
       json['is_sticker'] as bool,
-      json['rating'] as String,
-      json['slug'] as String,
-      json['source'] as String,
-      json['source_post_url'] as String,
-      json['source_tld'] as String,
+      json['rating'] as String?,
+      json['slug'] as String?,
+      json['source'] as String?,
+      json['source_post_url'] as String?,
+      json['source_tld'] as String?,
       json['title'] as String,
-      json['trending_datetime'] as String,
+      json['trending_datetime'] as String?,
       json['type'] as String,
       json['url'] as String,
       json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
       UserDictionary.fromJson(json['userDictionary'] as Map<String, dynamic>),
-    );
+    )..animatedTextStyle = json['animated_text_style'] as String?;
 
 Map<String, dynamic> _$GiphyMediaToJson(GiphyMedia instance) =>
     <String, dynamic>{
       'analytics_response_payload': instance.analyticsResponsePayload,
+      'animated_text_style': instance.animatedTextStyle,
       'bitly_gif_url': instance.bitlyGifUrl,
       'bitly_url': instance.bitlyUrl,
       'content_url': instance.contentUrl,

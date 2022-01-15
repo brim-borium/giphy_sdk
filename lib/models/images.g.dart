@@ -7,30 +7,70 @@ part of 'images.dart';
 // **************************************************************************
 
 Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
-      Downsized.fromJson(json['downsized'] as Map<String, dynamic>),
-      Downsized.fromJson(json['downsized_large'] as Map<String, dynamic>),
-      Downsized.fromJson(json['downsized_medium'] as Map<String, dynamic>),
-      Downsized.fromJson(json['downsized_small'] as Map<String, dynamic>),
-      Downsized.fromJson(json['downsized_still'] as Map<String, dynamic>),
-      FixedHeight.fromJson(json['fixed_height'] as Map<String, dynamic>),
-      FixedHeight.fromJson(
-          json['fixed_height_downsampled'] as Map<String, dynamic>),
-      FixedHeight.fromJson(json['fixed_height_small'] as Map<String, dynamic>),
-      Downsized.fromJson(
-          json['fixed_height_small_still'] as Map<String, dynamic>),
-      Downsized.fromJson(json['fixed_height_still'] as Map<String, dynamic>),
-      FixedHeight.fromJson(json['fixed_width'] as Map<String, dynamic>),
-      FixedHeight.fromJson(
+      json['downsized'] == null
+          ? null
+          : ImageAttributes.fromJson(json['downsized'] as Map<String, dynamic>),
+      json['downsized_large'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['downsized_large'] as Map<String, dynamic>),
+      json['downsized_medium'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['downsized_medium'] as Map<String, dynamic>),
+      json['downsized_small'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['downsized_small'] as Map<String, dynamic>),
+      json['downsized_still'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['downsized_still'] as Map<String, dynamic>),
+      json['fixed_height'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_height'] as Map<String, dynamic>),
+      json['fixed_height_downsampled'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_height_downsampled'] as Map<String, dynamic>),
+      json['fixed_height_small'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_height_small'] as Map<String, dynamic>),
+      json['fixed_height_small_still'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_height_small_still'] as Map<String, dynamic>),
+      json['fixed_height_still'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_height_still'] as Map<String, dynamic>),
+      ImageAttributes.fromJson(json['fixed_width'] as Map<String, dynamic>),
+      ImageAttributes.fromJson(
           json['fixed_width_downsampled'] as Map<String, dynamic>),
-      FixedHeight.fromJson(json['fixed_width_small'] as Map<String, dynamic>),
-      Downsized.fromJson(
-          json['fixed_width_small_still'] as Map<String, dynamic>),
-      Downsized.fromJson(json['fixed_width_still'] as Map<String, dynamic>),
-      Downsized.fromJson(json['looping'] as Map<String, dynamic>),
+      ImageAttributes.fromJson(
+          json['fixed_width_small'] as Map<String, dynamic>),
+      json['fixed_width_small_still'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_width_small_still'] as Map<String, dynamic>),
+      json['fixed_width_still'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['fixed_width_still'] as Map<String, dynamic>),
+      json['looping'] == null
+          ? null
+          : ImageAttributes.fromJson(json['looping'] as Map<String, dynamic>),
       json['mediaId'] as String,
-      FixedHeight.fromJson(json['original'] as Map<String, dynamic>),
-      Downsized.fromJson(json['original_still'] as Map<String, dynamic>),
-      Downsized.fromJson(json['preview'] as Map<String, dynamic>),
+      ImageAttributes.fromJson(json['original'] as Map<String, dynamic>),
+      json['original_still'] == null
+          ? null
+          : ImageAttributes.fromJson(
+              json['original_still'] as Map<String, dynamic>),
+      json['preview'] == null
+          ? null
+          : ImageAttributes.fromJson(json['preview'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ImagesToJson(Images instance) => <String, dynamic>{

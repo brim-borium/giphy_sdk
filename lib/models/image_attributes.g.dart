@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'fixed_height.dart';
+part of 'image_attributes.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FixedHeight _$FixedHeightFromJson(Map<String, dynamic> json) => FixedHeight(
+ImageAttributes _$ImageAttributesFromJson(Map<String, dynamic> json) =>
+    ImageAttributes(
       json['frames'] as int,
       json['size'] as int,
-      json['url'] as String,
+      json['url'] as String?,
       json['height'] as int,
       json['mediaId'] as String,
       json['mp4_size'] as int,
       json['mp4'] as String?,
       json['renditionType'] as String,
       json['webp_size'] as int,
-      json['webp'] as String,
+      json['webp'] as String?,
       json['width'] as int,
     );
 
-Map<String, dynamic> _$FixedHeightToJson(FixedHeight instance) =>
+Map<String, dynamic> _$ImageAttributesToJson(ImageAttributes instance) =>
     <String, dynamic>{
       'frames': instance.frames,
       'size': instance.size,
