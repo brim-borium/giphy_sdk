@@ -8,4 +8,7 @@ class MethodNames {
 class ParameterNames {
   /// param name for [apiKey]
   static const String apiKey = 'apiKey';
+
+  /// param name for [giphySettings]
+  static const String giphySettings = 'giphySettings';
 }

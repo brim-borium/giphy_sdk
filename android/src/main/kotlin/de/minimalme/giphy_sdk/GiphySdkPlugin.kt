@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.ui.GPHContentType
 import com.giphy.sdk.ui.GPHSettings
+import com.giphy.sdk.ui.themes.GPHTheme
 import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.gson.Gson
@@ -19,6 +20,9 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /** GiphySdkPlugin */
@@ -29,7 +33,6 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   /// when the Flutter Engine is detached from the Activity
 
   /// application context
-  private var applicationContext: Context? = null
   private var applicationActivity: Activity? = null
 
   /// method channel
@@ -42,25 +45,17 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   /// parameters
   private val paramApiKey = "apiKey"
+  private val paramGiphySettings = "giphySettings"
 
   /// errors
   private val errorConnecting = "errorConnecting"
 
-  /// giphy setup
-  private val giphySettings = GPHSettings(
-    GridType.waterfall,
-    selectedContentType = GPHContentType.gif,
-    enableDynamicText = true )
-
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "giphy_sdk")
     channel.setMethodCallHandler(this)
-
-    onAttachedToEngine(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    applicationContext = null
     channel.setMethodCallHandler(null)
   }
 
@@ -82,22 +77,78 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
-      methodOpenGiphySelection -> openGiphySelection(call.argument(paramApiKey), result)
+      methodOpenGiphySelection -> openGiphySelection(
+        call.argument<String>(paramApiKey),
+        call.argument<HashMap<String, Any>>(paramGiphySettings),
+        result)
       else -> {
         result.notImplemented()
       }
     }
   }
 
-  private fun openGiphySelection(apiKey: String?, result: Result) {
+  private fun openGiphySelection(
+    apiKey: String?,
+    giphySettings : HashMap<String, Any>?,
+    result: Result) {
+
     if (apiKey.isNullOrBlank()) {
       result.error(errorConnecting, "apiKey is not set or has invalid format", "ApiKey provided: $apiKey")
-    } else {
-      val dialog = GiphyDialogFragment.newInstance(giphySettings, apiKey)
-      dialog.gifSelectionListener = getGifSelectionListener(result)
-      val supportFragmentManager = (applicationActivity as FragmentActivity).supportFragmentManager
-      dialog.show(supportFragmentManager, "giphy_sdk")
+      return
     }
+
+    val settings: GPHSettings
+
+    if(giphySettings == null || giphySettings.isEmpty()){
+      settings = GPHSettings(
+        GridType.waterfall,
+        theme = GPHTheme.Automatic,
+        stickerColumnCount = 3,
+        mediaTypeConfig = arrayOf(
+          GPHContentType.clips,
+          GPHContentType.emoji,
+          GPHContentType.gif,
+          GPHContentType.recents,
+          GPHContentType.sticker,
+          GPHContentType.text),
+        selectedContentType = GPHContentType.gif,
+        showSuggestionsBar = true,
+        showConfirmationScreen= true,
+        enableDynamicText = true )
+    }else{
+      val theme = giphySettings["theme"] as String
+      val columnCount = giphySettings["columnCount"] as Int
+      val contentTypes = giphySettings["contentTypes"] as ArrayList<*>
+      val selectedContentType = giphySettings["selectedContentType"] as String
+      val showSuggestionsBar = giphySettings["showSuggestionsBar"] as Boolean
+      val showConfirmationScreen = giphySettings["showConfirmationScreen"] as Boolean
+      val enabledDynamicText = giphySettings["enabledDynamicText"] as Boolean
+      val mappedThemeString = (theme.substring(0, 1).uppercase()) + theme.substring(1)
+      val mappedTheme = enumValueOf<GPHTheme>(mappedThemeString)
+      val mappedSelectedContentType = enumValueOf<GPHContentType>(selectedContentType)
+      val mediaTypeConfigArrayList : ArrayList<GPHContentType> = ArrayList()
+
+      contentTypes.forEach {
+          element -> mediaTypeConfigArrayList.add(enumValueOf(element as String))
+      }
+
+      val mediaTypeConfig: Array<GPHContentType> = mediaTypeConfigArrayList.toTypedArray()
+
+      settings = GPHSettings(
+        GridType.waterfall,
+        theme = mappedTheme,
+        stickerColumnCount = columnCount,
+        mediaTypeConfig = mediaTypeConfig,
+        selectedContentType = mappedSelectedContentType,
+        showSuggestionsBar = showSuggestionsBar,
+        showConfirmationScreen= showConfirmationScreen,
+        enableDynamicText = enabledDynamicText )
+    }
+
+    val dialog = GiphyDialogFragment.newInstance(settings, apiKey)
+    dialog.gifSelectionListener = getGifSelectionListener(result)
+    val supportFragmentManager = (applicationActivity as FragmentActivity).supportFragmentManager
+    dialog.show(supportFragmentManager, "giphy_sdk")
   }
 
   private fun getGifSelectionListener(result: Result) = object : GiphyDialogFragment.GifSelectionListener {
@@ -117,11 +168,6 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun didSearchTerm(term: String) {
       Log.i(loggingTag,"didSearchTerm\n$term")
     }
-  }
-
-  private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
-
-    this.applicationContext = applicationContext
   }
 }
 
