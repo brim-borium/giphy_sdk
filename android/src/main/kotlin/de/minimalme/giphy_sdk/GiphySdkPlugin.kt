@@ -1,5 +1,6 @@
 package de.minimalme.giphy_sdk
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -20,6 +21,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -49,6 +51,7 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   /// errors
   private val errorConnecting = "errorConnecting"
+  private val errorMappingGiphySettings = "errorMappingGiphySettings"
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "giphy_sdk")
@@ -97,52 +100,59 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       return
     }
 
-    val settings: GPHSettings
+    var settings= GPHSettings(
+      GridType.waterfall,
+      theme = GPHTheme.Automatic,
+      stickerColumnCount = 3,
+      mediaTypeConfig = arrayOf(
+        GPHContentType.clips,
+        GPHContentType.emoji,
+        GPHContentType.gif,
+        GPHContentType.recents,
+        GPHContentType.sticker,
+        GPHContentType.text),
+      selectedContentType = GPHContentType.gif,
+      showSuggestionsBar = true,
+      showConfirmationScreen= true,
+      enableDynamicText = true )
 
-    if(giphySettings == null || giphySettings.isEmpty()){
-      settings = GPHSettings(
-        GridType.waterfall,
-        theme = GPHTheme.Automatic,
-        stickerColumnCount = 3,
-        mediaTypeConfig = arrayOf(
-          GPHContentType.clips,
-          GPHContentType.emoji,
-          GPHContentType.gif,
-          GPHContentType.recents,
-          GPHContentType.sticker,
-          GPHContentType.text),
-        selectedContentType = GPHContentType.gif,
-        showSuggestionsBar = true,
-        showConfirmationScreen= true,
-        enableDynamicText = true )
-    }else{
-      val theme = giphySettings["theme"] as String
-      val columnCount = giphySettings["columnCount"] as Int
-      val contentTypes = giphySettings["contentTypes"] as ArrayList<*>
-      val selectedContentType = giphySettings["selectedContentType"] as String
-      val showSuggestionsBar = giphySettings["showSuggestionsBar"] as Boolean
-      val showConfirmationScreen = giphySettings["showConfirmationScreen"] as Boolean
-      val enabledDynamicText = giphySettings["enabledDynamicText"] as Boolean
-      val mappedThemeString = (theme.substring(0, 1).uppercase()) + theme.substring(1)
-      val mappedTheme = enumValueOf<GPHTheme>(mappedThemeString)
-      val mappedSelectedContentType = enumValueOf<GPHContentType>(selectedContentType)
-      val mediaTypeConfigArrayList : ArrayList<GPHContentType> = ArrayList()
+    if(!giphySettings.isNullOrEmpty()){
+      try {
+        val theme = giphySettings["theme"] as String
+        val columnCount = giphySettings["columnCount"] as Int
+        val contentTypes = giphySettings["contentTypes"] as ArrayList<*>
+        val selectedContentType = giphySettings["selectedContentType"] as String
+        val showSuggestionsBar = giphySettings["showSuggestionsBar"] as Boolean
+        val showConfirmationScreen = giphySettings["showConfirmationScreen"] as Boolean
+        val enabledDynamicText = giphySettings["enabledDynamicText"] as Boolean
+        val mappedThemeString = (theme.substring(0, 1).uppercase()) + theme.substring(1)
+        val mappedTheme = enumValueOf<GPHTheme>(mappedThemeString)
+        val mappedSelectedContentType = enumValueOf<GPHContentType>(selectedContentType)
+        val mediaTypeConfigArrayList : ArrayList<GPHContentType> = ArrayList()
 
-      contentTypes.forEach {
-          element -> mediaTypeConfigArrayList.add(enumValueOf(element as String))
+        contentTypes.forEach {
+            element -> mediaTypeConfigArrayList.add(enumValueOf(element as String))
+        }
+
+        val mediaTypeConfig: Array<GPHContentType> = mediaTypeConfigArrayList.toTypedArray()
+
+        settings = GPHSettings(
+          GridType.waterfall,
+          theme = mappedTheme,
+          stickerColumnCount = columnCount,
+          mediaTypeConfig = mediaTypeConfig,
+          selectedContentType = mappedSelectedContentType,
+          showSuggestionsBar = showSuggestionsBar,
+          showConfirmationScreen= showConfirmationScreen,
+          enableDynamicText = enabledDynamicText )
       }
-
-      val mediaTypeConfig: Array<GPHContentType> = mediaTypeConfigArrayList.toTypedArray()
-
-      settings = GPHSettings(
-        GridType.waterfall,
-        theme = mappedTheme,
-        stickerColumnCount = columnCount,
-        mediaTypeConfig = mediaTypeConfig,
-        selectedContentType = mappedSelectedContentType,
-        showSuggestionsBar = showSuggestionsBar,
-        showConfirmationScreen= showConfirmationScreen,
-        enableDynamicText = enabledDynamicText )
+     catch(ex: Exception) {
+       result.error(
+         errorMappingGiphySettings,
+         "Something went wrong when mapping the giphy settings",
+         "When mapping $giphySettings, an error was encountered")
+       return
+     }
     }
 
     val dialog = GiphyDialogFragment.newInstance(settings, apiKey)
@@ -153,6 +163,7 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   private fun getGifSelectionListener(result: Result) = object : GiphyDialogFragment.GifSelectionListener {
 
+    @SuppressLint("LogNotTimber")
     override fun onGifSelected(media: Media, searchTerm: String?, selectedContentType: GPHContentType) {
       Log.i(
         loggingTag,
@@ -161,10 +172,12 @@ class GiphySdkPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       result.success(Gson().toJson(media))
     }
 
+    @SuppressLint("LogNotTimber")
     override fun onDismissed(selectedContentType: GPHContentType) {
       Log.i(loggingTag,"onDismissed")
     }
 
+    @SuppressLint("LogNotTimber")
     override fun didSearchTerm(term: String) {
       Log.i(loggingTag,"didSearchTerm\n$term")
     }
