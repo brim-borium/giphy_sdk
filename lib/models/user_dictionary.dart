@@ -5,11 +5,13 @@ part 'user_dictionary.g.dart';
 @JsonSerializable()
 class UserDictionary {
   @JsonKey(name: 'rk')
-  String rk;
+  String? rk;
   @JsonKey(name: 'pk')
-  String pk;
+  String? pk;
+  @JsonKey(name: 'itk')
+  String? itk;
 
-  UserDictionary(this.rk, this.pk);
+  UserDictionary(this.rk, this.pk, this.itk);
 
   factory UserDictionary.fromJson(Map<String, dynamic> json) =>
       _$UserDictionaryFromJson(json);

@@ -24,12 +24,16 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             var apiKey = dotenv.env['API_KEY'];
-            var media = await GiphySdk.openGiphySelection(apiKey: apiKey!);
+            var settings = const GiphySettings.textCreation();
+            var media = await GiphySdk.openGiphySelection(
+              apiKey: apiKey!,
+              giphySettings: settings,
+            );
             setState(() {
               _giphyMedia = media;
             });
           },
-          child: const Icon(Icons.connect_without_contact),
+          child: const Icon(Icons.gif),
         ),
         appBar: AppBar(
           title: const Text('Giphy SDK Example app'),
@@ -41,17 +45,53 @@ class _MyAppState extends State<MyApp> {
 
   Widget _buildBody() {
     if (_giphyMedia == null) {
-      return const Center(
-        child: Text("No gif selected"),
+      return Center(
+        child: Text(
+          "No gif selected",
+          style: Theme.of(context).textTheme.headline4,
+        ),
       );
     }
 
-    return Column(
-      children: [
-        Text("Selected gif id: ${_giphyMedia?.id}"),
-        Text("Selected gif title: ${_giphyMedia?.title}"),
-        Text("Selected bitly url : ${_giphyMedia?.bitlyGifUrl}"),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Information about the selected gif",
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          ListTile(title: Text("id: ${_giphyMedia?.id}")),
+          ListTile(title: Text("type: ${_giphyMedia?.type}")),
+          ListTile(title: Text("title: ${_giphyMedia?.title}")),
+          Text(
+            "The selected gif",
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          if (_giphyMedia?.url != null)
+            Image.network(
+              _giphyMedia?.url as String,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+            )
+          else
+            const Text("Could not load gif"),
+        ],
+      ),
     );
   }
 }
