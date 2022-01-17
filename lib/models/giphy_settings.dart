@@ -6,7 +6,7 @@ part 'giphy_settings.g.dart';
 
 /// Used to configure the apperance and configuration of the giphy selection.
 ///
-/// It uses a default set of settings but can indivudally be changed. For ease
+/// It uses a default set of settings but can individually be changed. For ease
 /// of use there are multiple constructors available to create the object
 ///   [GiphySettings] -> everything enabled
 ///   [GiphySettings.textCreation] -> just text gifs with the GIPHY TEXT feature

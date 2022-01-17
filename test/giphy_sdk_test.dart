@@ -17,7 +17,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
+  test('openGiphySelection', () async {
     expect(await GiphySdk.openGiphySelection(apiKey: ""), true);
   });
 }
